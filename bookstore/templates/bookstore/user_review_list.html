@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Review List for {{ user.username }} {% endblock %}
+
+{% block content %}
+<h1>{{ user.username }}</h1>
+{% if review_list %}
+<h3>{{ review_list|length }} review{{ review_list|pluralize}}</h2>
+<h3>Average rating: {{ average_rating }}</h3>
+{% endif %}
+
+{% for review in review_list %}
+<div class="review" id="review-{{ forloop.counter }}">
+<p>{{ review.book.title }} ({{ review.timestamp }})</p>
+<p>{{ review.rating }} out of 5</p>
+<p>
+{{ review.review_message }}
+</p>
+</div>
+{% empty %}
+<p>There are no reviews for this user.</p>
+{% endfor %}
+{% endblock %}

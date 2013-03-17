@@ -4,8 +4,27 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic.base import TemplateView
 
-urlpatterns = patterns('bookstore',
+from bookstore.models import Book, Author, Review
+from bookstore.views import BookReviewListView, UserReviewListView
+
+urlpatterns = patterns('bookstore.views',
+    #index/homepage
     url(r'^$',
         TemplateView.as_view(template_name='bookstore/index.html'),
         name='index'),
+    #list of reviews for a certain book
+    url(r'^book/(?P<book_id>[0-9]+?)/?$',
+        BookReviewListView.as_view(),
+        name='book_review_list'
+    ),
+    #list of reviews for a certain user
+    url(r'^user/(?P<user_id>[0-9]+?)/?$',
+        UserReviewListView.as_view(),
+        name='user_review_list'
+    ),
+    url(r'^user/(?P<username>.+?)/?$',
+        UserReviewListView.as_view(),
+        name='user_review_list'
+    ),
+    #list of books, sorted
 )
