@@ -14,4 +14,9 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
+
+    #bookstore app
+    url(r'^bookstore/',
+        include('bookstore.urls', namespace='bookstore', app_name='bookstore')
+    ),
 )

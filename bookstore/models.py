@@ -52,4 +52,4 @@ class Review(models.Model):
     )
 
     def __unicode__(self):
-        return self.user.username + " - " + self.book.title
+        return self.user.username + " : " + self.book.title
