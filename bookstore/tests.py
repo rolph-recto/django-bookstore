@@ -4,9 +4,10 @@
 import datetime
 
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, UserManager
 from bookstore.models import Author, Book, Review
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse, NoReverseMatch
 
 class BookstoreModelsTest(TestCase):
     """Test suite for Bookstore models"""
@@ -157,7 +158,91 @@ class BookstoreModelsTest(TestCase):
 class BookstoreViewsTest(TestCase):
     """Test suite for Bookstore views"""
 
-    def testSimple(self):
-        self.assertEqual(1, 1)
+    def setUp(self):
+        self.user = User(username='user', password='password', email='u@ex.com')
+        self.user.save()
 
+        self.author = Author(first_name='Ernest', last_name='Hemingway')
+        self.author.save()
+
+        self.book = Book(title='A Farewell to Arms', author=self.author,
+            publication_year=1929)
+        self.book.save()
+
+        self.review = Review(
+            user=self.user,
+            book=Book(title='A Farewell to Arms'),
+            timestamp=datetime.datetime.now(),
+            review_message='Good Book',
+            rating=5
+        )
+
+    def testIndex(self):
+        """Test bookstore index view"""
+        response = self.client.get(reverse('bookstore:index'))
+        #Just make sure the page loads, that's all
+        self.assertEqual(response.status_code, 200)
+
+    def testBookReviewList(self):
+        """Test books review list view"""
+        #if no book id was specified, it should return an error
+        self.assertRaises(
+            NoReverseMatch,
+            lambda: self.client.get(reverse('bookstore:book_review_list'))
+        )
+
+        #if the book id is invalid, it should return an error
+        response = self.client.get(reverse(
+            'bookstore:book_review_list',
+            kwargs = {'book_id':0}
+        ))
+        self.assertEqual(response.status_code, 404)
+
+        #if the book id is valid, it should give the right book
+        response = self.client.get(reverse(
+            'bookstore:book_review_list',
+            kwargs = {'book_id':1}
+        ))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['book'].title, 'A Farewell to Arms')
+
+    def testUserReviewList(self):
+        """Test user review list view"""
+        #if no user id was specified, it should return an error
+        self.assertRaises(
+            NoReverseMatch,
+            lambda: self.client.get(reverse('bookstore:user_review_list'))
+        )
+
+        #if the user id is invalid, it should return an error
+        response = self.client.get(reverse(
+            'bookstore:user_review_list',
+            kwargs = {'user_id':0}
+        ))
+        self.assertEqual(response.status_code, 404)
+
+        #if the username is invalid, it should return an error
+        response = self.client.get(reverse(
+            'bookstore:user_review_list',
+            kwargs = {'username':'nobody'}
+        ))
+        self.assertEqual(response.status_code, 404)
+
+        #if the user id is valid, it should give the right book
+        response = self.client.get(reverse(
+            'bookstore:user_review_list',
+            kwargs = {'user_id':1}
+        ))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['queried_user'].username, 'user')
+        self.assertEqual(response.context['queried_user'].pk, 1)
+
+        #if the username is valid, it should give the right book
+        response = self.client.get(reverse(
+            'bookstore:user_review_list',
+            kwargs = {'username':'user'}
+        ))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['queried_user'].username, 'user')
+        self.assertEqual(response.context['queried_user'].pk, 1)
 

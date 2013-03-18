@@ -44,8 +44,11 @@ class UserReviewListView(ListView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(UserReviewListView, self).get_context_data(**kwargs)
-        # Add in the book
-        context['user'] = self.user
+
+        # Add in the user
+        context['queried_user'] = self.user
+
         agg_list = self.get_queryset().aggregate(Avg('rating'))
         context['average_rating'] = agg_list['rating__avg']
+
         return context
