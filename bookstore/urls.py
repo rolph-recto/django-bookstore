@@ -5,7 +5,7 @@ from django.conf.urls import patterns, include, url
 from django.views.generic.base import TemplateView
 
 from bookstore.models import Book, Author, Review
-from bookstore.views import BookReviewListView, UserReviewListView
+from bookstore.views import BookReviewListView, UserReviewListView, BookListView
 
 urlpatterns = patterns('bookstore.views',
     #index/homepage
@@ -27,4 +27,8 @@ urlpatterns = patterns('bookstore.views',
         name='user_review_list'
     ),
     #list of books, sorted
+    url(r'^book?s?/$',
+        BookListView.as_view(),
+        name='book_list'
+    ),
 )

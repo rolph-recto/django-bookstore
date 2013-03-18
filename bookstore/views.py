@@ -52,3 +52,14 @@ class UserReviewListView(ListView):
         context['average_rating'] = agg_list['rating__avg']
 
         return context
+
+
+class BookListView(ListView):
+    """View for a list of books"""
+    model = Book
+    template_name = 'bookstore/book_list.html'
+
+    def get_queryset(self):
+        return (Book.objects.all()
+            .annotate(Avg('review__rating'))
+            .order_by('title'))

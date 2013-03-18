@@ -169,9 +169,17 @@ class BookstoreViewsTest(TestCase):
             publication_year=1929)
         self.book.save()
 
+        self.book2 = Book(title='The Sun Also Rises', author=self.author,
+            publication_year=1926)
+        self.book2.save()
+
+        self.book3 = Book(title='For Whom The Bell Tolls', author=self.author,
+            publication_year=1940)
+        self.book3.save()
+
         self.review = Review(
             user=self.user,
-            book=Book(title='A Farewell to Arms'),
+            book=self.book,
             timestamp=datetime.datetime.now(),
             review_message='Good Book',
             rating=5
@@ -245,4 +253,18 @@ class BookstoreViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['queried_user'].username, 'user')
         self.assertEqual(response.context['queried_user'].pk, 1)
+
+    def testBookList(self):
+        """Test book list view"""
+
+        #make sure the context has a list of books, in alphabetical order
+        response = self.client.get((reverse('bookstore:book_list')))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['book_list'][0].title,
+            'A Farewell to Arms')
+        self.assertEqual(response.context['book_list'][1].title,
+            'For Whom The Bell Tolls')
+        self.assertEqual(response.context['book_list'][2].title,
+            'The Sun Also Rises')
+
 

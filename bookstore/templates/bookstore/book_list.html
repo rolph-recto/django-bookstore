@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Book List{% endblock %}
+
+{% block content %}
+{% for book in book_list %}
+<div class="book" id="book-{{ forloop.counter }}">
+<p>{{ book.title }} by {{ book.author }}</p>
+{% if book.review__rating__avg %}
+<p><i>Average rating: {{ book.review__rating__avg }}</i></p>
+{% endif %}
+</div>
+{% empty %}
+<p>There are no books in the database.</p>
+{% endfor %}
+{% endblock %}
