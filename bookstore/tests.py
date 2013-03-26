@@ -256,7 +256,6 @@ class BookstoreViewsTest(TestCase):
 
     def testBookList(self):
         """Test book list view"""
-
         #make sure the context has a list of books, in alphabetical order
         response = self.client.get((reverse('bookstore:book_list')))
         self.assertEqual(response.status_code, 200)
