@@ -23,6 +23,11 @@ urlpatterns = patterns('bookstore.views',
         TemplateView.as_view(template_name='bookstore/login_success.html'),
         name='login_success'),
 
+    #login user
+    url(r'^logout/?$',
+        LogoutView.as_view(),
+        name='login'),
+
     #list of reviews for a certain book
     url(r'^book/(?P<book_id>[0-9]+?)/?$',
         BookReviewListView.as_view(),
