@@ -3,6 +3,9 @@
 {% block title %}Review List for {{ queried_user.username }} {% endblock %}
 
 {% block content %}
+
+{% include 'user_nav.html' %}
+
 <h1>{{ queried_user.username }}</h1>
 {% if review_list %}
 <h3>{{ review_list|length }} review{{ review_list|pluralize}}</h2>

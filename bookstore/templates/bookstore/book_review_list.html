@@ -3,6 +3,9 @@
 {% block title %}Review List for {{ book.title }} {% endblock %}
 
 {% block content %}
+
+{% include 'user_nav.html' %}
+
 <h1>{{ book.title }}</h1>
 <h2>by {{ book.author }}</h2>
 {% if review_list %}

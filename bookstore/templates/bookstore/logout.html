@@ -1,18 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Bookstore Login{% endblock %}
+{% block title %}Bookstore Logout{% endblock %}
 
 {% block content %}
-<h1>Login</h1>
+<h1>Logout</h1>
 
 {% if logout_success %}
 <p>
-You have successfully logged out.
+You have successfully logged out. {{ user.username }}
+{% url 'bookstore:index' as url_index %}
+Go back to <a href='{{ url_index }}'>home</a>
 </p>
 {% else %}
 <p>
-You aren't logged in!
+You are not logged in.
 </p>
+{% url 'bookstore:login' as login_url %}
+<a href='{{ login_url }}'>Login</a>
 {% endif %}
 
 {% endblock %}

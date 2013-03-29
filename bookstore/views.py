@@ -98,7 +98,8 @@ class LogoutView(TemplateView):
         context = super(LogoutView, self).get_context_data(**kwargs)
 
         #log user out
-        if self.request.user.is_authenticated:
+        print self.request.user
+        if self.request.user.is_authenticated():
             logout(self.request)
             context['logout_success'] = True
         #user wasn't logged in

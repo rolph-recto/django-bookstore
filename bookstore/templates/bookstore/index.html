@@ -3,5 +3,19 @@
 {% block title %}Bookstore Home{% endblock %}
 
 {% block content %}
+
+{% include 'user_nav.html' %}
+
 <h1>This is a bookstore.</h1>
+
+<p>
+{% url 'bookstore:user_review_list' username=user.username as url_user_review_list %}
+<a href='{{ url_user_review_list }}'>Get list of reviews by <b>{{ user.username }}</b></a>
+</p>
+
+<p>
+{% url 'bookstore:book_list' as url_book_list %}
+<a href='{{ url_book_list }}'>Get list of books in the bookstore</a>
+</p>
+
 {% endblock %}

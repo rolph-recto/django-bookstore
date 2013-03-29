@@ -1,0 +1,28 @@
+{% url 'bookstore:index' as url_bookstore_index %}
+
+{% if not user.is_anonymous %}
+<h2>{{ user.username }}</h2>
+
+<p>
+<a href='{{ url_bookstore_index }}'>Home</a>
+</p>
+
+<p>
+{% url 'bookstore:logout' as logout_url %}
+<a href='{{ logout_url }}'>Logout</a>
+</p>
+
+{% else %}
+<p>
+You are not logged in.
+</p>
+
+<p>
+<a href='{{ url_bookstore_index }}'>Home</a>
+</p>
+
+<p>
+{% url 'bookstore:login' as login_url %}
+<a href='{{ login_url }}'>Login</a>
+</p>
+{% endif %}

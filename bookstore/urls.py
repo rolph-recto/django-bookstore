@@ -12,6 +12,9 @@ urlpatterns = patterns('bookstore.views',
     url(r'^$',
         TemplateView.as_view(template_name='bookstore/index.html'),
         name='index'),
+    url(r'^index/?$',
+        TemplateView.as_view(template_name='bookstore/index.html'),
+        name='index'),
 
     #login user
     url(r'^login/?$',
@@ -26,7 +29,7 @@ urlpatterns = patterns('bookstore.views',
     #login user
     url(r'^logout/?$',
         LogoutView.as_view(),
-        name='login'),
+        name='logout'),
 
     #list of reviews for a certain book
     url(r'^book/(?P<book_id>[0-9]+?)/?$',
@@ -45,7 +48,7 @@ urlpatterns = patterns('bookstore.views',
     ),
 
     #list of books, sorted
-    url(r'^book?s?/$',
+    url(r'^books?/?$',
         BookListView.as_view(),
         name='book_list'
     ),
